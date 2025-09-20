@@ -15,11 +15,8 @@ import {
   Alert,
   PermissionsAndroid,
   Platform,
+  SafeAreaView,
 } from 'react-native';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
 import BleManager from 'react-native-ble-manager';
 
 interface BluetoothDevice {
@@ -32,15 +29,14 @@ function App() {
   const isDarkMode = useColorScheme() === 'dark';
 
   return (
-    <SafeAreaProvider>
+    <SafeAreaView style={styles.safeArea}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <AppContent />
-    </SafeAreaProvider>
+    </SafeAreaView>
   );
 }
 
 function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
   const [isScanning, setIsScanning] = useState(false);
   const [connectedDevices, setConnectedDevices] = useState<BluetoothDevice[]>([]);
   const [discoveredDevices, setDiscoveredDevices] = useState<BluetoothDevice[]>([]);
@@ -180,7 +176,7 @@ function AppContent() {
   );
 
   return (
-    <View style={[styles.container, { paddingTop: safeAreaInsets.top }]}>
+    <View style={styles.container}>
       <Text style={styles.title}>BLE POC App</Text>
       
       <TouchableOpacity
@@ -213,6 +209,10 @@ function AppContent() {
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#f5f5f5',
+  },
   container: {
     flex: 1,
     padding: 20,
